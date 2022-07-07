@@ -1,11 +1,9 @@
 import React from 'react';
 import './App.css';
-<<<<<<< HEAD
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import CampoPesquisa from './CampoPesquisa';
-=======
 import Search from './pages/Search';
->>>>>>> main-group-9-req5
+import ProdutosPorCategoria from './pages/ProdutosPorCategoria';
 
 function App() {
   return (
@@ -18,6 +16,7 @@ function App() {
         </BrowserRouter>
       </header>
       <Search />
+      <ProdutosPorCategoria />
     </div>
   );
 }
