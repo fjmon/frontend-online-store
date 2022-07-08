@@ -1,25 +1,38 @@
 import React from 'react';
 import './App.css';
-<<<<<<< HEAD
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import CampoPesquisa from './CampoPesquisa';
-=======
 import Search from './pages/Search';
->>>>>>> main-group-9-req5
+import Categorias from './pages/Catergorias';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <BrowserRouter>
-          <Switch>
-            <Route path="/" component={ CampoPesquisa } />
-          </Switch>
-        </BrowserRouter>
-      </header>
-      <Search />
-    </div>
-  );
+class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      categoriaSelecionada: '',
+    };
+  }
+
+  // A chave categoriaSelecionada do estado será utilizada no requisito 6
+  salvaCategoria = (categorias) => {
+    this.setState({ categoriaSelecionada: categorias });
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <header className="App-header">
+          <BrowserRouter>
+            <Switch>
+              <Route path="/" component={ CampoPesquisa } />
+            </Switch>
+          </BrowserRouter>
+        </header>
+        <Search />
+        <Categorias salvaCategoria={ this.salvaCategoria } />
+      </div>
+    );
+  }
 }
 
 export default App;
