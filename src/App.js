@@ -6,6 +6,7 @@ import Search from './pages/Search';
 import Categorias from './pages/Catergorias';
 import Botao from './Botao';
 import ShoppingCart from './ShoppingCart';
+import ProdutosPorCategoria from './pages/ProdutosPorCategoria';
 
 class App extends React.Component {
   constructor() {
@@ -34,6 +35,7 @@ class App extends React.Component {
           </BrowserRouter>
         </header>
         <Search />
+        <ProdutosPorCategoria />
         <Categorias salvaCategoria={ this.salvaCategoria } />
       </div>
     );
