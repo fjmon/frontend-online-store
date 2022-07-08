@@ -4,6 +4,8 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import CampoPesquisa from './CampoPesquisa';
 import Search from './pages/Search';
 import Categorias from './pages/Catergorias';
+import Botao from './Botao';
+import ShoppingCart from './ShoppingCart';
 
 class App extends React.Component {
   constructor() {
@@ -25,6 +27,9 @@ class App extends React.Component {
           <BrowserRouter>
             <Switch>
               <Route path="/" component={ CampoPesquisa } />
+              <Route exact path="/ShoppingCart">
+                <ShoppingCart />
+              </Route>
             </Switch>
           </BrowserRouter>
         </header>
