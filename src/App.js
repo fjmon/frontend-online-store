@@ -26,11 +26,10 @@ class App extends React.Component {
       <div className="App">
         <header className="App-header">
           <BrowserRouter>
+            <Botao />
             <Switch>
-              <Route path="/" component={ CampoPesquisa } />
-              <Route exact path="/ShoppingCart">
-                <ShoppingCart />
-              </Route>
+              <Route exact path="/" component={ CampoPesquisa } />
+              <Route path="/ShoppingCart" component={ ShoppingCart } />
             </Switch>
           </BrowserRouter>
         </header>
