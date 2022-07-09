@@ -42,9 +42,21 @@ class CartItem extends React.Component {
       <div>
         <p data-testid="shopping-cart-product-name">{product.title}</p>
         <p>{price}</p>
-        <button type="button" onClick={ this.diminuirQuantidade }>-</button>
+        <button
+          data-testid="product-decrease-quantity"
+          type="button"
+          onClick={ this.diminuirQuantidade }
+        >
+          -
+        </button>
         <span data-testid="shopping-cart-product-quantity">{quantidade}</span>
-        <button type="button" onClick={ this.aumentarQuantidade }>+</button>
+        <button
+          data-testid="product-increase-quantity"
+          type="button"
+          onClick={ this.aumentarQuantidade }
+        >
+          +
+        </button>
       </div>
     );
   }
