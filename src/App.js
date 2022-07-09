@@ -17,6 +17,7 @@ class App extends React.Component {
       searchProduct: '',
       categorias: [],
       categoriaSelecionada: '',
+      produtosDoCarrinho: [],
     };
   }
 
@@ -45,30 +46,50 @@ class App extends React.Component {
     this.setState({ searchProduct: searchFor }, this.getProducts);
   }
 
+  addProductToCart = (event, product) => {
+    event.preventDefault();
+    this.setState((prevState) => ({
+      produtosDoCarrinho: [...prevState.produtosDoCarrinho, product],
+    }));
+  }
+
   render() {
-    const { products, categorias } = this.state;
+    const { products, categorias, produtosDoCarrinho } = this.state;
     return (
       <div className="App">
         <header className="App-header">
           <BrowserRouter>
             <Botao />
             <Switch>
-              <Route exact path="/" component={ CampoPesquisa } />
-              <Route path="/ShoppingCart" component={ ShoppingCart } />
+              <Route
+                exact
+                path="/"
+                render={ () => (
+                  <>
+                    <CampoPesquisa />
+                    <Search
+                      handleSearch={ this.handleSearch }
+                      products={ products }
+                      addProductToCart={ this.addProductToCart }
+                    />
+                    <ProdutosPorCategoria
+                      products={ products }
+                    />
+                    <Categorias
+                      categorias={ categorias }
+                      handleChange={ this.handleCategories }
+                    />
+                  </>
+                ) }
+              />
+              <Route
+                path="/ShoppingCart"
+                render={ () => (
+                  <ShoppingCart produtosDoCarrinho={ produtosDoCarrinho } />) }
+              />
             </Switch>
           </BrowserRouter>
         </header>
-        <Search
-          handleSearch={ this.handleSearch }
-          products={ products }
-        />
-        <ProdutosPorCategoria
-          products={ products }
-        />
-        <Categorias
-          categorias={ categorias }
-          handleChange={ this.handleCategories }
-        />
       </div>
     );
   }
