@@ -16,7 +16,7 @@ class Search extends React.Component {
   }
 
   render() {
-    const { handleSearch, products } = this.props;
+    const { handleSearch, products, addProductToCart } = this.props;
     const { searchProduct } = this.state;
     return (
       <div>
@@ -39,7 +39,11 @@ class Search extends React.Component {
           {
             products.length < 1 ? <p>Nenhum produto foi encontrado</p> : (
               products.map((product) => (
-                <ProductCard key={ product.id } product={ product } />
+                <ProductCard
+                  key={ product.id }
+                  product={ product }
+                  addProductToCart={ addProductToCart }
+                />
               )))
           }
         </section>
