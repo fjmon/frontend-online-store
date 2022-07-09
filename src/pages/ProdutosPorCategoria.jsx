@@ -1,29 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ProductCard from '../components/ProductCard';
-import { getProductsFromCategoryAndQuery } from '../services/api';
 
 class ProdutosPorCategoria extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      products: [],
-    };
-  }
-
-  componentDidMount = async () => {
-    this.getProducts();
-  }
-
-  getProducts = async () => {
-    // A propriedade categoria deve ser passada pelo requisito 4
-    const { categoria } = this.props;
-    const products = await getProductsFromCategoryAndQuery(categoria, '');
-    this.setState({ products: products.results });
-  }
-
   render() {
-    const { products } = this.state;
+    const { products } = this.props;
     return (
       <div data-testid="product">
         {
@@ -37,7 +18,7 @@ class ProdutosPorCategoria extends React.Component {
 }
 
 ProdutosPorCategoria.propTypes = {
-  categoria: PropTypes.string,
+  categoriaSelecionada: PropTypes.string,
 }.isRequired;
 
 export default ProdutosPorCategoria;

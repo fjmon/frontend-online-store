@@ -7,21 +7,46 @@ import Categorias from './pages/Catergorias';
 import Botao from './Botao';
 import ShoppingCart from './ShoppingCart';
 import ProdutosPorCategoria from './pages/ProdutosPorCategoria';
+import { getCategories, getProductsFromCategoryAndQuery } from './services/api';
 
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
+      products: [],
+      searchProduct: '',
+      categorias: [],
       categoriaSelecionada: '',
     };
   }
 
-  // A chave categoriaSelecionada do estado será utilizada no requisito 6
-  salvaCategoria = (categorias) => {
-    this.setState({ categoriaSelecionada: categorias });
+  componentDidMount = async () => {
+    const categorias = await getCategories();
+    this.setState({ categorias });
+  }
+
+  handleCategories = (event) => {
+    const categoriaSelecionada = event.target.value;
+    this.setState({ categoriaSelecionada }, this.getProducts);
+  }
+
+  getProducts = async () => {
+    const { searchProduct, categoriaSelecionada } = this.state;
+    const products = await
+    getProductsFromCategoryAndQuery(categoriaSelecionada, searchProduct);
+    console.log('chamou');
+    this.setState({
+      products: products.results,
+    });
+  }
+
+  handleSearch = (event, searchFor) => {
+    event.preventDefault();
+    this.setState({ searchProduct: searchFor }, this.getProducts);
   }
 
   render() {
+    const { products, categorias } = this.state;
     return (
       <div className="App">
         <header className="App-header">
@@ -33,9 +58,17 @@ class App extends React.Component {
             </Switch>
           </BrowserRouter>
         </header>
-        <Search />
-        <ProdutosPorCategoria />
-        <Categorias salvaCategoria={ this.salvaCategoria } />
+        <Search
+          handleSearch={ this.handleSearch }
+          products={ products }
+        />
+        <ProdutosPorCategoria
+          products={ products }
+        />
+        <Categorias
+          categorias={ categorias }
+          handleChange={ this.handleCategories }
+        />
       </div>
     );
   }

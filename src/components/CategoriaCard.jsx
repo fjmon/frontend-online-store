@@ -8,7 +8,7 @@ function CategoriaCard({ categoria }) {
         <input
           id={ categoria.id }
           type="radio"
-          value={ categoria.name }
+          value={ categoria.id }
           name="categoria"
         />
         { categoria.name }

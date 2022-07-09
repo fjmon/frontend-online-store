@@ -1,31 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CategoriaCard from '../components/CategoriaCard';
-import { getCategories } from '../services/api';
 
 class Categorias extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      categorias: [],
-    };
-  }
-
-  componentDidMount = async () => {
-    const categorias = await getCategories();
-    this.setState({ categorias });
-  }
-
-  onChangeValue = (event) => {
-    const { salvaCategoria } = this.props;
-    const { value } = event.target;
-    salvaCategoria(value);
-  }
-
   render() {
-    const { categorias } = this.state;
+    const { categorias, handleChange } = this.props;
     return (
-      <div onChange={ this.onChangeValue }>
+      <div onChange={ handleChange }>
         {
           categorias.map((categoria, index) => (
             <CategoriaCard key={ index } categoria={ categoria } />
@@ -37,7 +18,7 @@ class Categorias extends React.Component {
 }
 
 Categorias.propTypes = {
-  salvaCategoria: PropTypes.func,
+  categorias: PropTypes.array,
 }.isRequired;
 
 export default Categorias;
