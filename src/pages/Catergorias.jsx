@@ -9,7 +9,10 @@ class Categorias extends React.Component {
       <div onChange={ handleChange }>
         {
           categorias.map((categoria, index) => (
-            <CategoriaCard key={ index } categoria={ categoria } />
+            <CategoriaCard
+              key={ index }
+              categoria={ categoria }
+            />
           ))
         }
       </div>

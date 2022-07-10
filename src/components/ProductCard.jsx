@@ -1,7 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function components({ product, addProductToCart }) {
-  const { title, price, thumbnail } = product;
+  const { title, price, thumbnail, id } = product;
   return (
     <div>
       <span>{title}</span>
@@ -14,6 +15,12 @@ function components({ product, addProductToCart }) {
       >
         Adicionar ao Carrinho
       </button>
+      <Link
+        data-testid="product-detail-link"
+        to={ `/DetalhesDoProduto/${id}` }
+      >
+        Detalhes do produto
+      </Link>
     </div>
   );
 }
