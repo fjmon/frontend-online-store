@@ -5,7 +5,7 @@ class DetalhesDoProduto extends React.Component {
   constructor() {
     super();
     this.state = {
-      categoria: [],
+      product: {},
     };
   }
 
@@ -14,20 +14,28 @@ class DetalhesDoProduto extends React.Component {
   }
 
   carregarInfos = () => {
-    const { productsID } = this.props;
+    const { products, match: { params: { productID } } } = this.props;
     this.setState({
-      categoria: productsID[0],
+      product: products.find((product) => product.id === productID),
     });
   };
 
   render() {
-    const { categoria } = this.state;
+    const { product } = this.state;
+    const { addProductToCart } = this.props;
     return (
       <div data-testid="product">
         <div>
-          <span data-testid="product-detail-name">{ categoria.title }</span>
-          <span>{categoria.price}</span>
-          <img src={ categoria.thumbnail } alt={ categoria.title } />
+          <span data-testid="product-detail-name">{ product.title }</span>
+          <span>{product.price}</span>
+          <img src={ product.thumbnail } alt={ product.title } />
+          <button
+            type="button"
+            data-testid="product-detail-add-to-cart"
+            onClick={ (event) => { addProductToCart(event, product); } }
+          >
+            Adicionar ao Carrinho
+          </button>
         </div>
         <div>Especificações Técnicas</div>
       </div>
@@ -35,7 +43,8 @@ class DetalhesDoProduto extends React.Component {
   }
 }
 DetalhesDoProduto.propTypes = {
-  categoriaSelecionada: PropTypes.string,
+  addProductToCart: PropTypes.func,
+  products: PropTypes.array,
 }.isRequired;
 
 export default DetalhesDoProduto;

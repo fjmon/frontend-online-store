@@ -91,12 +91,12 @@ class App extends React.Component {
               />
             </Switch>
             <Route
-              path="/DetalhesDoProduto/:productsID/"
+              path="/DetalhesDoProduto/:productID/"
               render={ (props) => (
                 <DetalhesDoProduto
                   { ...props }
-                  productsID={ products }
-                  categoriaSelecionada={ categoriaSelecionada }
+                  products={ products }
+                  addProductToCart={ this.addProductToCart }
                 />) }
             />
           </BrowserRouter>
