@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import CampoPesquisa from './CampoPesquisa';
 import Search from './pages/Search';
 import Categorias from './pages/Catergorias';
 import Botao from './Botao';
@@ -9,6 +8,7 @@ import ShoppingCart from './ShoppingCart';
 import ProdutosPorCategoria from './pages/ProdutosPorCategoria';
 import DetalhesDoProduto from './pages/DetalhesDoProduto';
 import { getCategories, getProductsFromCategoryAndQuery } from './services/api';
+import Checkout from './pages/Checkout';
 
 class App extends React.Component {
   constructor() {
@@ -19,6 +19,7 @@ class App extends React.Component {
       categorias: [],
       categoriaSelecionada: '',
       produtosDoCarrinho: [],
+      totalPrice: 0,
     };
   }
 
@@ -36,7 +37,6 @@ class App extends React.Component {
     const { searchProduct, categoriaSelecionada } = this.state;
     const products = await
     getProductsFromCategoryAndQuery(categoriaSelecionada, searchProduct);
-    console.log('chamou');
     this.setState({
       products: products.results,
     });
@@ -47,15 +47,50 @@ class App extends React.Component {
     this.setState({ searchProduct: searchFor }, this.getProducts);
   }
 
-  addProductToCart = (event, product) => {
+  addProductToCart = (event, product, amount = 1) => {
     event.preventDefault();
     this.setState((prevState) => ({
-      produtosDoCarrinho: [...prevState.produtosDoCarrinho, product],
-    }));
+      produtosDoCarrinho: [
+        ...prevState.produtosDoCarrinho,
+        {
+          item: product,
+          amount,
+          price: product.price,
+        },
+      ],
+    }), this.updateTotal);
+  }
+
+  handleQuantity = (productId, toIncrease) => {
+    const { produtosDoCarrinho } = this.state;
+    const updatedCart = produtosDoCarrinho.map((product) => {
+      const { item } = product;
+      if (item.id === productId) {
+        if (toIncrease) {
+          product.amount += 1;
+        } else if (product.amount > 1) {
+          product.amount -= 1;
+        }
+        product.price = item.price * product.amount;
+      }
+      return product;
+    });
+    this.setState({
+      produtosDoCarrinho: updatedCart,
+    }, this.updateTotal);
+  }
+
+  updateTotal = () => {
+    const { produtosDoCarrinho } = this.state;
+    const totalPrice = produtosDoCarrinho
+      .reduce((acc, curr) => acc + Number(curr.price), 0);
+    this.setState({
+      totalPrice });
   }
 
   render() {
-    const { products, categorias, produtosDoCarrinho, categoriaSelecionada } = this.state;
+    const { products, categorias, produtosDoCarrinho,
+      categoriaSelecionada, totalPrice } = this.state;
     return (
       <div className="App">
         <header className="App-header">
@@ -67,7 +102,6 @@ class App extends React.Component {
                 path="/"
                 render={ () => (
                   <>
-                    <CampoPesquisa />
                     <Search
                       handleSearch={ this.handleSearch }
                       products={ products }
@@ -86,8 +120,23 @@ class App extends React.Component {
               />
               <Route
                 path="/ShoppingCart"
-                render={ () => (
-                  <ShoppingCart produtosDoCarrinho={ produtosDoCarrinho } />) }
+                render={ (props) => (
+                  <ShoppingCart
+                    { ...props }
+                    produtosDoCarrinho={ produtosDoCarrinho }
+                    handleQuantity={ this.handleQuantity }
+                    totalPrice={ totalPrice }
+                  />) }
+              />
+              <Route
+                path="/checkout"
+                render={
+                  () => (<Checkout
+                    handleQuantity={ this.handleQuantity }
+                    produtosDoCarrinho={ produtosDoCarrinho }
+                    totalPrice={ totalPrice }
+                  />)
+                }
               />
             </Switch>
             <Route

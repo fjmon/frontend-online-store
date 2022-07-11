@@ -7,6 +7,7 @@ class Search extends React.Component {
     super();
     this.state = {
       searchProduct: '',
+      madeFirstSearch: false,
     };
   }
 
@@ -15,9 +16,13 @@ class Search extends React.Component {
     this.setState({ searchProduct: value });
   }
 
+  toggleNotSearchMessage = () => {
+    this.setState({ madeFirstSearch: true });
+  }
+
   render() {
     const { handleSearch, products, addProductToCart } = this.props;
-    const { searchProduct } = this.state;
+    const { searchProduct, madeFirstSearch } = this.state;
     return (
       <div>
         <form>
@@ -30,21 +35,31 @@ class Search extends React.Component {
           <button
             type="submit"
             data-testid="query-button"
-            onClick={ (event) => { handleSearch(event, searchProduct); } }
+            onClick={ (event) => {
+              handleSearch(event, searchProduct);
+              this.toggleNotSearchMessage();
+            } }
           >
             Search
           </button>
         </form>
+        {
+          !searchProduct && (
+            <p data-testid="home-initial-message">
+              Digite algum termo de pesquisa ou escolha uma categoria.
+            </p>)
+        }
         <section data-testid="product">
           {
-            products.length < 1 ? <p>Nenhum produto foi encontrado</p> : (
-              products.map((product) => (
-                <ProductCard
-                  key={ product.id }
-                  product={ product }
-                  addProductToCart={ addProductToCart }
-                />
-              )))
+            products.length < 1 && madeFirstSearch
+              ? <p>Nenhum produto foi encontrado</p> : (
+                products.map((product) => (
+                  <ProductCard
+                    key={ product.id }
+                    product={ product }
+                    addProductToCart={ addProductToCart }
+                  />
+                )))
           }
         </section>
       </div>
