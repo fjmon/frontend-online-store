@@ -66,9 +66,9 @@ class App extends React.Component {
     const updatedCart = produtosDoCarrinho.map((product) => {
       const { item } = product;
       if (item.id === productId) {
-        if (toIncrease) {
+        if (toIncrease && (product.amount + 1 <= product.item.available_quantity)) {
           product.amount += 1;
-        } else if (product.amount > 1) {
+        } else if (!toIncrease && product.amount > 1) {
           product.amount -= 1;
         }
         product.price = item.price * product.amount;
