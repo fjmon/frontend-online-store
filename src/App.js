@@ -17,7 +17,7 @@ class App extends React.Component {
       searchProduct: '',
       categorias: [],
       categoriaSelecionada: '',
-      produtosDoCarrinho: [],
+      produtosDoCarrinho: this.loadCart() || [],
       totalPrice: 0,
     };
   }
@@ -57,8 +57,16 @@ class App extends React.Component {
           price: product.price,
         },
       ],
-    }), this.updateTotal);
+    }), () => { this.updateTotal(); this.saveCart(); });
   }
+
+  saveCart = () => {
+    const { produtosDoCarrinho } = this.state;
+    const save = JSON.stringify(produtosDoCarrinho);
+    localStorage.setItem('produtosDoCarrinho', save);
+  }
+
+    loadCart = () => JSON.parse(localStorage.getItem('produtosDoCarrinho'));
 
   handleQuantity = (productId, toIncrease) => {
     const { produtosDoCarrinho } = this.state;
@@ -94,7 +102,7 @@ class App extends React.Component {
       <div className="App">
         <header className="App-header">
           <BrowserRouter>
-            <Botao />
+            <Botao produtosDoCarrinho={ produtosDoCarrinho } />
             <Switch>
               <Route
                 exact
