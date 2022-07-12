@@ -49,7 +49,7 @@ class Search extends React.Component {
               Digite algum termo de pesquisa ou escolha uma categoria.
             </p>)
         }
-        <section data-testid="product">
+        <section>
           {
             products.length < 1 && madeFirstSearch
               ? <p>Nenhum produto foi encontrado</p> : (
