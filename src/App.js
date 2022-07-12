@@ -5,7 +5,6 @@ import Search from './pages/Search';
 import Categorias from './pages/Catergorias';
 import Botao from './Botao';
 import ShoppingCart from './ShoppingCart';
-import ProdutosPorCategoria from './pages/ProdutosPorCategoria';
 import DetalhesDoProduto from './pages/DetalhesDoProduto';
 import { getCategories, getProductsFromCategoryAndQuery } from './services/api';
 import Checkout from './pages/Checkout';
@@ -90,7 +89,7 @@ class App extends React.Component {
 
   render() {
     const { products, categorias, produtosDoCarrinho,
-      categoriaSelecionada, totalPrice } = this.state;
+      totalPrice } = this.state;
     return (
       <div className="App">
         <header className="App-header">
@@ -106,10 +105,6 @@ class App extends React.Component {
                       handleSearch={ this.handleSearch }
                       products={ products }
                       addProductToCart={ this.addProductToCart }
-                    />
-                    <ProdutosPorCategoria
-                      products={ products }
-                      categoriaSelecionada={ categoriaSelecionada }
                     />
                     <Categorias
                       categorias={ categorias }
